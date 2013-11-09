@@ -1,0 +1,26 @@
+{
+  "name": "sphero-nodebotssf",
+  "version": "0.0.1",
+  "description": "NodeBots SF Spherofest for the November 2013 meetup.",
+  "author": {
+    "name": "Daniel D. Shaw",
+    "email": "dshaw@dshaw.com",
+    "url": "http://dshaw.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dshaw/sphero-nodebotssf.git"
+  },
+  "bugs": {
+    "url": "http://github.com/dshaw/sphero-nodebotssf/issues"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/tap test/*.js"
+  },
+  "directories": {
+    "examples": "examples",
+    "test": "test"
+  }
+}
