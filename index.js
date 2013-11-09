@@ -4,6 +4,13 @@ var sphero = spheron.sphero()
 	, spheroPort = process.argv[2] || '/dev/cu.Sphero-BYR-RN-SPP' //Change this to match your device
 	, COLORS = spheron.toolbelt.COLORS
 
+var roll = sphero.roll;
+sphero.roll = function(heading, speed, state, options) {
+  sphero.heading = heading;
+  roll.apply(this, arguments);
+  return this;
+};
+
 sphero.stop = function () {
 	sphero.roll(0, sphero.heading || 0, 0);
 }
