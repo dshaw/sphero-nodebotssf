@@ -1,18 +1,26 @@
-var spheron = require('spheron')
+/*!
+ * sphero-nodebotssf
+ * Copyright(c) 2013 Daniel D. Shaw, http://dshaw.com
+ * MIT Licensed
+ */
+
+/**
+ * Module dependencies
+ */
+
+var serialport = require('serialport')
+	, spheron = require('spheron')
+
+/**
+ * Configuration
+ */
 
 var sphero = spheron.sphero()
-	, spheroPort = process.argv[2] || '/dev/cu.Sphero-BYR-RN-SPP' //Change this to match your device
+	, spheroPort = process.argv[2]
 	, COLORS = spheron.toolbelt.COLORS
 
-var roll = sphero.roll;
-sphero.roll = function(heading, speed, state, options) {
-  sphero.heading = heading;
-  roll.apply(this, arguments);
-  return this;
-};
-
 sphero.stop = function () {
-	sphero.roll(0, sphero.heading || 0, 0);
+	sphero.roll(0, 0, 0);
 }
 
 sphero.repl = function () {
@@ -32,19 +40,56 @@ sphero.repl = function () {
 	})
 }
 
+sphero.square = function (speed) {
+	speed || (speed = 180)
+
+	sphero.setRGB(COLORS.BLUE, false)
+	sphero.roll(speed, 0, 1)	
+	
+	setTimeout(function () {
+		sphero.setRGB(COLORS.GREEN, false)
+  	sphero.roll(speed, 90, 1)	
+
+  	setTimeout(function () {
+			sphero.setRGB(COLORS.YELLOW, false)
+  		sphero.roll(speed, 180, 1)
+
+  		setTimeout(function () {
+				sphero.setRGB(COLORS.PINK, false)
+				sphero.roll(speed, 270, 1)
+
+				setTimeout(function () {
+					sphero.stop()
+				}, 1000)
+			}, 1000)
+		}, 1000)
+	}, 1000)
+}
+
 sphero.on('open', function onOpen () {
 	console.log('Connection to Sphero open')
 
 	sphero.repl()
 
-  sphero.setRGB(COLORS.BLUE, false)
-  sphero.heading = 90
-  sphero.roll(128, 90, 1)
-	sphero.setRGB(COLORS.PINK, false)
-	sphero.roll(128, 90, 1)
-	
-	sphero.stop()
+	sphero.square()
 })
 
-console.log('Attempting to connect to Sphero on', spheroPort)
-sphero.open(spheroPort)
+function openPort (port) {
+	console.log('Attempting to connect to Sphero on', port)
+ 	sphero.open(port)
+}
+
+if (spheroPort) {
+	openPort(spheroPort)
+} else {
+	console.log('Discovering Sphero comName')	
+
+	serialport.list(function (err, ports) {
+	  var spheroPorts = ports.reduce(function(coms, port) {
+	    if (/Sphero/.test(port.comName)) coms.push(port.comName)
+	   	return coms
+	  }, [])
+	  spheroPort = spheroPorts[0]
+	  openPort(spheroPort)
+	})
+}
