@@ -30,7 +30,7 @@ sphero.repl = function () {
 	context.spheron = spheron
 	context.toolbelt = spheron.toolbelt
 	context.commands = spheron.commands
-	context.COLORS = spheron.COLORS
+	context.COLORS = spheron.toolbelt.COLORS
 
 	context.o = { resetTimeout: true, requestAcknowledgement: true }
 	context.sphero = sphero
@@ -44,11 +44,11 @@ sphero.square = function (speed) {
 	speed || (speed = 180)
 
 	sphero.setRGB(COLORS.BLUE, false)
-	sphero.roll(speed, 0, 1)	
-	
+	sphero.roll(speed, 0, 1)
+
 	setTimeout(function () {
 		sphero.setRGB(COLORS.GREEN, false)
-  	sphero.roll(speed, 90, 1)	
+  	sphero.roll(speed, 90, 1)
 
   	setTimeout(function () {
 			sphero.setRGB(COLORS.YELLOW, false)
@@ -82,7 +82,7 @@ function openPort (port) {
 if (spheroPort) {
 	openPort(spheroPort)
 } else {
-	console.log('Discovering Sphero comName')	
+	console.log('Discovering Sphero comName')
 
 	serialport.list(function (err, ports) {
 	  var spheroPorts = ports.reduce(function(coms, port) {
