@@ -35,6 +35,30 @@ sphero.repl = function () {
 	context.o = { resetTimeout: true, requestAcknowledgement: true }
 	context.sphero = sphero
 
+  context.forward = function (speed) {
+    var speed = speed || 100;
+    sphero.roll(speed,0,1);
+  }
+
+  context.right = function (speed) {
+    var speed = speed || 100;
+    sphero.roll(speed,90,1);
+  }
+
+  context.back = function (speed) {
+    var speed = speed || 100;
+    sphero.roll(speed,180,1);
+  }
+
+  context.left = function (speed) {
+    var speed = speed || 100;
+    sphero.roll(speed,270,1);
+  }
+
+  context.stop = function () {
+    sphero.roll(0,0,1);
+  }
+
 	context.sphero.on('error', function(error) {
 	  console.log('Sphero error:', error)
 	})
@@ -65,6 +89,7 @@ sphero.square = function (speed) {
 		}, 1000)
 	}, 1000)
 }
+
 
 sphero.on('open', function onOpen () {
 	console.log('Connection to Sphero open')
