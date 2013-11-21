@@ -22,5 +22,9 @@
   "directories": {
     "examples": "examples",
     "test": "test"
+  },
+  "dependencies": {
+    "serialport": "~1.2.5",
+    "spheron": "0.0.1"
   }
 }
